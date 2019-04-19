@@ -1,0 +1,5 @@
+.idea
+.terraform
+*.pyc
+test
+*.zip
