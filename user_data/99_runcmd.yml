@@ -1,0 +1,4 @@
+#cloud-config
+runcmd:
+  # sshd
+  - [ systemctl, restart, sshd.service ]

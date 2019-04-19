@@ -1,0 +1,28 @@
+#cloud-init
+write_files:
+  - path: ${cas_file_path}
+    permissions: '0600'
+    owner: root
+    content: |
+      ${ca_public_key}
+
+  - path: ${sshd_conf_path}
+    permissions: '0600'
+    owner: root
+    content: |
+      AcceptEnv LANG LC_*
+      ChallengeResponseAuthentication no
+      LogLevel VERBOSE
+      Port ${ssh_port}
+      GSSAPIAuthentication no
+      GSSAPICleanupCredentials yes
+      HostKey /etc/ssh/ssh_host_ecdsa_key
+      HostKey /etc/ssh/ssh_host_ed25519_key
+      HostKey /etc/ssh/ssh_host_rsa_key
+      PubkeyAuthentication yes
+      PasswordAuthentication no
+      Subsystem sftp /usr/libexec/openssh/sftp-server
+      SyslogFacility AUTHPRIV
+      UsePAM yes
+      PermitRootLogin no
+      TrustedUserCAKeys ${cas_file_path}
