@@ -1,4 +1,5 @@
-#cloud-init
+---
+# cloud-init
 write_files:
   - path: ${cas_file_path}
     permissions: '0600'
