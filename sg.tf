@@ -1,13 +1,13 @@
 resource "aws_security_group" "this" {
   description = "Default ${var.name} security group"
   name_prefix = "${var.name}-"
-  vpc_id      = "${var.vpc_id}"
+  vpc_id      = var.vpc_id
 
-  tags = "${merge(var.tags, map("Name", var.name))}"
+  tags = local.tags
 }
 
 resource "aws_security_group_rule" "internal" {
-  security_group_id = "${aws_security_group.this.id}"
+  security_group_id = aws_security_group.this.id
   type              = "ingress"
   from_port         = 0
   to_port           = 0
@@ -16,18 +16,18 @@ resource "aws_security_group_rule" "internal" {
 }
 
 resource "aws_security_group_rule" "ssh" {
-  count = "${var.allow_public_access ? 1 : 0}"
+  count = var.allow_public_access ? 1 : 0
 
-  security_group_id = "${aws_security_group.this.id}"
+  security_group_id = aws_security_group.this.id
   type              = "ingress"
-  to_port           = "${var.ssh_port}"
-  from_port         = "${var.ssh_port}"
+  to_port           = var.ssh_port
+  from_port         = var.ssh_port
   protocol          = "TCP"
-  cidr_blocks       = "${var.cidr_blocks}"
+  cidr_blocks       = var.cidr_blocks
 }
 
 resource "aws_security_group_rule" "egress" {
-  security_group_id = "${aws_security_group.this.id}"
+  security_group_id = aws_security_group.this.id
   type              = "egress"
   from_port         = 0
   to_port           = 0

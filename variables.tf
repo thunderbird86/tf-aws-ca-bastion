@@ -3,7 +3,9 @@ variable "ca_public_key" {
   description = "Public part of lambda_bless ssh key"
 }
 
-variable "vpc_id" {}
+variable "vpc_id" {
+  description = "VPC ID where to create Security Group"
+}
 
 variable "subnet_id" {
   description = "Subnet ID define where lauch bastion"
@@ -12,7 +14,7 @@ variable "subnet_id" {
 #Optional
 variable "security_group_ids" {
   description = "List of additional security groups to attach"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -23,7 +25,7 @@ variable "zone_id" {
 
 variable "tags" {
   description = "Additional tags"
-  type        = "map"
+  type        = map(string)
   default     = {}
 }
 
@@ -72,7 +74,7 @@ variable "ssh_port" {
 
 variable "cidr_blocks" {
   description = ""
-  type        = "list"
+  type        = list(string)
 
   default = [
     "0.0.0.0/0",
